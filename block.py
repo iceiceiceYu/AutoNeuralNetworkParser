@@ -6,3 +6,7 @@ class Block:
         self.data = data
         self.input = []
         self.output = []
+
+
+    def __str__(self):
+        return 'block info: [b_id: {}, name: {}, text: {}, data: {}]'.format(self.b_id, self.name, self.text, self.data)
