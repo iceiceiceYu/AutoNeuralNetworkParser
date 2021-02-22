@@ -1,9 +1,21 @@
 from block import Block
+from pytorch_block import PytorchBlockFactory
 
 var_index = 0
+"""
+
+1. Input: (x)
+2. Conv2D:
+3. MaxPooling2D
+4. ReLU
+5. Linear
+6. Softmax
+7. Concat
+8. ResIncp
+"""
 
 
-def generate(b_list:list[Block]):
+def generate(b_list):
     # find input block by name
     input_block = None
     for i in range(len(b_list)):
@@ -19,7 +31,7 @@ def generate(b_list:list[Block]):
         curr_block = block_to_deal.pop(0)
         if check_input(curr_block):
             curr_block.output_variable = var_generator()
-            res_code += block_to_code(curr_block)
+            res_code += block_to_code(curr_block, curr_block.output_variable)
             block_to_deal.extend(curr_block.output)
 
     return res_code
@@ -35,9 +47,8 @@ def check_input(block:Block):
 def var_generator():
     global var_index
     var_index += 1
-    return 'x' + str(var_index)
+    return 'out' + str(var_index)
 
 
-def block_to_code(block):
-    input_str = ', '.join([temp.output_variable for temp in block.input])
-    return block.output_variable + ' = ' + block.name + '(' + input_str + ')\n'
+def block_to_code(block, out_var_name):
+    return PytorchBlockFactory.new_instance(block.name, block, out_var_name).to_pytorch_code() + '\n'
