@@ -14,9 +14,9 @@ def loader(path):
 
     for i in range(len(data)):
         tmp_data = data[i]
-        if tmp_data['type'] is 0:
+        if tmp_data['type'] == 0:
             block_list.append(Block(tmp_data['id'], tmp_data['name'], tmp_data['text'], tmp_data['data']))
-        elif tmp_data['type'] is 1:
+        elif tmp_data['type'] == 1:
             curve_list.append(Curve(tmp_data['id'], tmp_data['name'], tmp_data['from']['id'], tmp_data['to']['id']))
 
     return block_list, curve_list

@@ -6,6 +6,7 @@ class Block:
         self.data = data
         self.input = []
         self.output = []
+        self.output_variable = None
 
 
     def __str__(self):
