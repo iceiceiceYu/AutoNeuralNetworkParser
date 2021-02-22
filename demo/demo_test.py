@@ -5,7 +5,7 @@ from block import Block
 from curve import Curve
 if __name__ == '__main__':
 
-    b_list, c_list = JSON_loader.loader('1.json')
+    b_list, c_list = JSON_loader.loader('final_demo.json')
     print(c_list)
     print(b_list)
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
         from_block.output.append(to_block)
         to_block.input.append(from_block)
 
-    code = Code_generator.generate(b_list)
+    code = Code_generator.Translator(b_list).translate()
     print(code)
 
 # for i in range(len(b_list)):
