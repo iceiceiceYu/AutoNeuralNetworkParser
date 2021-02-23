@@ -1,17 +1,11 @@
 from block import Block
 
-class PytorchBlockFactory:
-    @staticmethod
-    def get_sub_block_class(typename):
-        sub_block_list = PytorchBlock.__subclasses__()
-        for i in range(len(sub_block_list)):
-            if sub_block_list[i].__name__ == typename:
-                return sub_block_list[i]
-        return None
 
+class PytorchBlockFactory:
     @staticmethod
     def new_instance(typename, block):
         return globals()[typename](block)
+
 
 class PytorchBlock:
     """
