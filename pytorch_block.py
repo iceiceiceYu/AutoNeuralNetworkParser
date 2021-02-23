@@ -2,24 +2,16 @@ from block import Block
 
 class PytorchBlockFactory:
     @staticmethod
-    def new_instance(typename, block):
-        if typename == "Conv2D":
-            return Conv2D(block)
-        elif typename == "MaxPooling2D":
-            return MaxPooling2D(block)
-        elif typename == "ReLU":
-            return ReLU(block)
-        elif typename == "Linear":
-            return Linear(block)
-        elif typename == "Softmax":
-            return Softmax2D(block)
-        elif typename == "Input":
-            return Input(block)
-        elif typename == "Concatenation":
-            return Concat(block)
-        else:
-            return EmptyBlock(block)
+    def get_sub_block_class(typename):
+        sub_block_list = PytorchBlock.__subclasses__()
+        for i in range(len(sub_block_list)):
+            if sub_block_list[i].__name__ == typename:
+                return sub_block_list[i]
+        return None
 
+    @staticmethod
+    def new_instance(typename, block):
+        return globals()[typename](block)
 
 class PytorchBlock:
     """
@@ -114,7 +106,7 @@ class Linear(PytorchBlock):
         self.arg_keys = ["in_features", "out_features"]
 
 
-class Softmax2D(PytorchBlock):
+class Softmax(PytorchBlock):
     def __init__(self, block: Block):
         super().__init__(block)
         self.mapping_name = "torch.nn.Softmax2d"
@@ -122,7 +114,7 @@ class Softmax2D(PytorchBlock):
 
 # Concat申明的时候没有结果
 # 调用的时候通过torch.stack进行调用
-class Concat(PytorchBlock):
+class Concatenation(PytorchBlock):
     def __init__(self, block: Block):
         super().__init__(block)
         self.mapping_name = "torch.stack"
@@ -130,7 +122,7 @@ class Concat(PytorchBlock):
         self.arg_keys = ["dim"]
 
     def parse_args(self):
-        super(Concat, self).parse_args()
+        super(Concatenation, self).parse_args()
         tensor_arg = "(" + ', '.join([in_block.output_var_name for in_block in self.src_block.input]) + ')'
         self.args['tensors'] = tensor_arg
 
