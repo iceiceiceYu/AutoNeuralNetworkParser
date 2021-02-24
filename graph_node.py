@@ -1,6 +1,6 @@
-class Block:
-    def __init__(self, b_id, name, text, data):
-        self.b_id = b_id
+class Node:
+    def __init__(self, n_id, name, text, data):
+        self.n_id = n_id
         self.name = name
         self.text = text
         self.data = data
@@ -11,6 +11,5 @@ class Block:
         # 调用该Block得到的output的变量名，在forward函数中进行分配
         self.output_var_name = None
 
-
     def __str__(self):
-        return 'block info: [b_id: {}, name: {}, text: {}, data: {}]'.format(self.b_id, self.name, self.text, self.data)
+        return 'node info: [b_id: {}, name: {}, text: {}, data: {}]'.format(self.n_id, self.name, self.text, self.data)
